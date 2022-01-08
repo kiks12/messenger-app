@@ -69,20 +69,43 @@ button {
 	list-style: none;
 }
 
-.messages-li {
-	margin: 1em 0;
-	padding: 0.5em;
-	border: 1px solid #bbbbbb;
-	border-radius: 0.4em;
+.messages-li-sender {
+	display: flex;
+	justify-content: right;
+	margin: 0.5em;
 }
 
-.messages-li-sender {
-	text-align: right;
-	margin: 1em 0;
-	padding: 0.5em;
-	background-color: #bbbbbb;
-	border-radius: 0.4em;
+.messages-li-receiver {
+	display: flex;
+	justify-content: left;
+	margin: 0.5em;
 }
+
+.messages-li-container-sender {
+	display: inline-block;
+	text-align: right;
+	border-radius: 0.4em;
+	padding: 0.3em 0.7em;
+	box-shadow: 0 0 3px rgba(200,200,200,0.7);
+	/* background-color: rgba(229, 219, 253, 0.8); */
+	width: auto;
+}
+
+.messages-li-container-receiver {
+	display: inline-block;
+	text-align: left;
+	border-radius: 0.4em;
+	padding: 0.3em 0.7em;
+	box-shadow: 0 0 3px rgba(200,200,200,0.7);
+	width: auto;
+}
+
+.messages-li-name {
+	font-size: 12px;
+	color: rgb(150,150,150);
+	margin: 0.3em 0;
+}
+
 
 form {
 	display: flex;

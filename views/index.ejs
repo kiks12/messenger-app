@@ -40,32 +40,61 @@
         const messages = document.getElementById('messages');
         const messageContent = document.getElementById("message-content");
         const messageForm = document.getElementById("message-form");
+        const username = document.getElementById("username");
 
         messageForm.addEventListener("submit", (e) => {
             e.preventDefault();
 
-            socket.emit("chat-to-server", messageContent.value);
-            const newMessage = document.createElement('li');
+            socket.emit("chat-to-server", {
+                content: messageContent.value,
+                sender: username.textContent,
+            });
+            const newMessageList = document.createElement('li');
+            const newMessageContainer = document.createElement('div');
+            const newMessage = document.createElement('div');
+            const newSender = document.createElement('p');
+
+            newMessageList.classList.add("messages-li-sender");
+            newMessageContainer.classList.add("messages-li-container-sender");
+            newSender.classList.add("messages-li-name");
+
             newMessage.textContent = messageContent.value;
-            newMessage.classList.add("messages-li-sender");
+            newSender.textContent = "You";
 
-            messages.appendChild(newMessage);
+            newMessageContainer.appendChild(newSender);
+            newMessageContainer.appendChild(newMessage);
 
-            messagesContainer.scrollTo(0, newMessage.offsetTop, 'smooth');
+            newMessageList.appendChild(newMessageContainer);
+
+            messages.appendChild(newMessageList);
+
+            messagesContainer.scrollTo(0, newMessageList.offsetTop, 'smooth');
 
             messageContent.value = '';
         })
 
 
         socket.on("chat-to-client", (payload) => {
+            const newMessageList = document.createElement('li');
+            const newMessageContainer = document.createElement('div');
+            const newMessage = document.createElement('div');
+            const newSender = document.createElement('p');
 
-            const newMessage = document.createElement('li');
-            newMessage.textContent = payload;
-            newMessage.classList.add("messages-li");
+            newMessageList.classList.add("messages-li-receiver");
+            newMessageContainer.classList.add("messages-li-container-receiver");
+            newSender.classList.add("messages-li-name");
 
-            messages.appendChild(newMessage);
+            newMessage.textContent = payload.content;
+            newSender.textContent = payload.sender;
 
-            messagesContainer.scrollTo(0, newMessage.offsetTop, 'smooth');
+            newMessageContainer.appendChild(newSender);
+            newMessageContainer.appendChild(newMessage);
+
+            newMessageList.appendChild(newMessageContainer);
+
+            messages.appendChild(newMessageList);
+
+            messagesContainer.scrollTo(0, newMessageList.offsetTop, 'smooth');
         })
 
     </script>
