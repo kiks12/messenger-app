@@ -2,6 +2,7 @@
 import express, { Express } from "express";
 import http from "http";
 import session from "express-session";
+import bodyParser from "body-parser";
 
 
 import { Server } from "socket.io";
@@ -9,7 +10,7 @@ import { Server } from "socket.io";
 
 import indexRouterHandler from "./routes/index";
 import loginRouteHandler from "./routes/login";
-import bodyParser from "body-parser";
+import logoutRouteHandler from "./routes/logout";
 
 const app: Express = express();
 export const server = http.createServer(app);
@@ -42,22 +43,7 @@ app.set("view engine", "ejs");
 
 indexRouterHandler(app, io);
 loginRouteHandler(app);
-// app.get("/", (req:any, res) => {
-// 	if(!req.session.user) res.redirect('/login');
-// 	res.render("index");
-// });
-
-
-// io.on('connection', (socket) => {
-// 	console.log('connected');
-// 	socket.on("chat-to-server", (payload) => {
-// 		socket.broadcast.emit("chat-to-client", payload);
-// 	})
-
-// 	socket.on("disconnect", () => {
-// 		console.log("disconnected");
-// 	})
-// })
+logoutRouteHandler(app);
 
 
 server.listen(PORT, () => console.log("app running in port " + PORT));

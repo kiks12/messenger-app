@@ -1,7 +1,11 @@
 import type { Express } from "express";
 
 const loginRouteHandler = (app: Express) => {
-    app.get("/login", (_req, res) => {
+    app.get("/login", (req:any, res) => {
+        if(req.session.user){
+            res.redirect('/');
+            return;
+        }
         res.render("login");  
     })
 

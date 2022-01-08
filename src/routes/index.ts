@@ -17,7 +17,6 @@ function indexRouterHandler(app: Express, io:any) {
     io.on('connection', (socket:any) => {
         console.log('connected');
         socket.on("chat-to-server", (payload: any) => {
-            console.log(payload);
             socket.broadcast.emit("chat-to-client", payload);
         })
         

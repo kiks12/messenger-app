@@ -23,6 +23,11 @@ h4 {
 	font-weight: 500;
 }
 
+a {
+	text-decoration: none;
+	color: var(--white);
+}
+
 button {
 	padding: 0.5rem 3rem;
 	background-color: #2d2d2d;
@@ -87,7 +92,7 @@ button {
 	border-radius: 0.4em;
 	padding: 0.3em 0.7em;
 	box-shadow: 0 0 3px rgba(200,200,200,0.7);
-	/* background-color: rgba(229, 219, 253, 0.8); */
+	background-color: rgba(250, 245, 170, 0.3);
 	width: auto;
 }
 
