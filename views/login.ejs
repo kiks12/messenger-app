@@ -4,17 +4,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css" />
     <title>Login</title>
 </head>
 <body>
     
-    <div>
-        <form action="/login" method="post">
-            <h1>Enter your name</h1>
-            <input type="text" name="name"/>
-            <button>Submit</button>
+    <main class="login-container">
+        <form action="/login" method="post" class="login-form">
+            <h1 style="margin: 0 0 1em 0;">Enter your name</h1>
+            <input type="text" name="name" style="margin: 1em; padding: 0.7em; width: 100%;" required placeholder="Your name...."/>
+            <button style="padding: 1em; width: 100%;">Submit</button>
         </form>
-    </div>
+    </main>
 
 </body>
 </html>

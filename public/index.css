@@ -129,3 +129,24 @@ form {
 .main-container {
 	height: 80%;
 }
+
+.login-container {
+	width: 50%;
+	height: 100%;
+	margin: auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.login-form {
+	width: 80%;
+	height: 50%;
+	border-radius: 0.6em;
+	padding: 2em;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	box-shadow: 0 0 3px rgba(200,200,200,0.7);
+}
