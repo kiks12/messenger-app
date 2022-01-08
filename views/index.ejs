@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="index.css">
+    <title>Home</title>
+</head>
+<body>
+    <header>
+        <%- include('partials/navbar.ejs') %>
+    </header>
+
+    <div class="main-container">
+        <div class="container" style="height: 100%;">
+            <div class="messages-container" id="messages-container">
+                <ul id="messages" class="messages"></ul>
+            </div>
+            
+            <div class="form-container">
+                <form id="message-form">
+                    <input type="text" id="message-content" class="form-control" style="margin-right: 1em;"/>
+                    <button type="submit">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        const messagesContainer = document.getElementById("messages-container");
+        const messages = document.getElementById('messages');
+        const messageContent = document.getElementById("message-content");
+        const messageForm = document.getElementById("message-form");
+
+        messageForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            socket.emit("chat-to-server", messageContent.value);
+            const newMessage = document.createElement('li');
+            newMessage.textContent = messageContent.value;
+            newMessage.classList.add("messages-li-sender");
+
+            messages.appendChild(newMessage);
+
+            messagesContainer.scrollTo(0, newMessage.offsetTop, 'smooth');
+
+            messageContent.value = '';
+        })
+
+
+        socket.on("chat-to-client", (payload) => {
+
+            const newMessage = document.createElement('li');
+            newMessage.textContent = payload;
+            newMessage.classList.add("messages-li");
+
+            messages.appendChild(newMessage);
+
+            messagesContainer.scrollTo(0, newMessage.offsetTop, 'smooth');
+        })
+
+    </script>
+</body>
+</html>
