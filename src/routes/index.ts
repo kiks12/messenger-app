@@ -20,14 +20,14 @@ function indexRouterHandler(app: Express, io: Server<DefaultEventsMap, DefaultEv
     
     io.on('connection', (socket) => {
         
-        socket.on("user-connected", (payload: any) => {
+        socket.on("user-connected", async (payload: any) => {
             const newUser = {
                 id: socket.id,
                 name: payload,
             }
-            users.push(newUser);
-            socket.broadcast.emit("new-user-connected", users);
-            
+            await users.push(newUser);
+            console.log(users);
+            socket.broadcast.emit("new-user-connected", newUser);
         })
 
         socket.emit("connected", users);

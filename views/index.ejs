@@ -53,36 +53,6 @@
         const messageForm = document.getElementById("message-form");
         const username = document.getElementById("username");
 
-
-        window.addEventListener("load", async () => {
-            await socket.emit("user-connected", username.textContent);
-            await socket.on("connected", async (payload) => {
-                await payload.forEach(user => {
-                    if(user.name !== username.textContent){
-                        const newUserList = document.createElement("li");
-                        newUserList.textContent = user.name;
-                        newUserList.classList.add("users-li");
-                    
-                        users.appendChild(newUserList); 
-                    }
-                })
-            })
-        })
-        
-        
-        socket.on("new-user-connected", async (payload) => {
-            await payload.forEach(user => {
-                if(user.name !== username.textContent){
-                    const newUserList = document.createElement("li");
-                    newUserList.textContent = user.name;
-                    newUserList.classList.add("users-li");
-                    
-                    users.appendChild(newUserList);
-                }
-            })
-        })
-
-
         const resetUsersPanel = () => {
             const child = users.lastElementChild;
             while (child) {
@@ -92,15 +62,40 @@
         }
 
 
+        window.addEventListener("load", async () => {
+            await socket.emit("user-connected", username.textContent);
+            await socket.on("connected", async (payload) => {
+                await payload.forEach(async user => {
+                    if(user.name !== username.textContent){
+                        const newUserList = document.createElement("li");
+                        newUserList.textContent = user.name;
+                        newUserList.classList.add("users-li");
+                    
+                        await users.appendChild(newUserList); 
+                    }
+                })
+            })
+        })
+        
+        
+        socket.on("new-user-connected", async (payload) => {
+            const newUserList = document.createElement("li");
+            newUserList.textContent = payload.name;
+            newUserList.classList.add("users-li");
+            
+            await users.appendChild(newUserList);
+        })
+
+
         socket.on("user-disconnected", async (payload) => {
             await resetUsersPanel();
-            await payload.forEach(user => {
+            payload.forEach(async user => {
                 if(user.name !== username.textContent){
                     const newUserList = document.createElement("li");
                     newUserList.textContent = user.name;
                     newUserList.classList.add("users-li");
                     
-                    users.appendChild(newUserList); 
+                    await users.appendChild(newUserList); 
                 }
             })
         })
