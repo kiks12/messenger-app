@@ -36,8 +36,8 @@ function indexRouterHandler(app: Express, io: Server<DefaultEventsMap, DefaultEv
             socket.broadcast.emit("chat-to-client", payload);
         })
         
-        socket.on("disconnect", () => {
-            const disconnectedUser = users.filter(user => user.id !== socket.id);
+        socket.on("disconnect", async () => {
+            const disconnectedUser = await users.filter(user => user.id !== socket.id);
             users = disconnectedUser;
             socket.broadcast.emit("user-disconnected", users);
         })

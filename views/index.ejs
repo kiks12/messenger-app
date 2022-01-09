@@ -56,8 +56,8 @@
 
         window.addEventListener("load", async () => {
             await socket.emit("user-connected", username.textContent);
-            await socket.on("connected", (payload) => {
-                payload.forEach(user => {
+            await socket.on("connected", async (payload) => {
+                await payload.forEach(user => {
                     if(user.name !== username.textContent){
                         const newUserList = document.createElement("li");
                         newUserList.textContent = user.name;
@@ -70,8 +70,8 @@
         })
         
         
-        socket.on("new-user-connected", (payload) => {
-            payload.forEach(user => {
+        socket.on("new-user-connected", async (payload) => {
+            await payload.forEach(user => {
                 if(user.name !== username.textContent){
                     const newUserList = document.createElement("li");
                     newUserList.textContent = user.name;
@@ -92,9 +92,9 @@
         }
 
 
-        socket.on("user-disconnected", (payload) => {
-            resetUsersPanel();
-            payload.forEach(user => {
+        socket.on("user-disconnected", async (payload) => {
+            await resetUsersPanel();
+            await payload.forEach(user => {
                 if(user.name !== username.textContent){
                     const newUserList = document.createElement("li");
                     newUserList.textContent = user.name;
