@@ -17,16 +17,23 @@
     </header>
 
     <div class="main-container">
-        <div class="container" style="height: 100%;">
-            <div class="messages-container" id="messages-container">
-                <ul id="messages" class="messages"></ul>
+        <div class="container" style="height: 100%; display: flex;">
+            <div style="width:25%;">
+                <div style="width: 100%;">
+                    <ul id="connected-users" class="users-ul"></ul>
+                </div>
             </div>
-            
-            <div class="form-container">
-                <form id="message-form">
-                    <input type="text" id="message-content" class="form-control" style="margin-right: 1em;"/>
-                    <button type="submit">Send</button>
-                </form>
+            <div style="flex:1;">
+                <div class="messages-container" id="messages-container">
+                    <ul id="messages" class="messages"></ul>
+                </div>
+                
+                <div class="form-container">
+                    <form id="message-form">
+                        <input type="text" id="message-content" class="form-control" style="margin-right: 1em;"/>
+                        <button type="submit">Send</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -36,11 +43,68 @@
     <script>
         const socket = io();
 
+
+        const users = document.getElementById("connected-users");
+
+
         const messagesContainer = document.getElementById("messages-container");
         const messages = document.getElementById('messages');
         const messageContent = document.getElementById("message-content");
         const messageForm = document.getElementById("message-form");
         const username = document.getElementById("username");
+
+
+        window.addEventListener("load", async () => {
+            await socket.emit("user-connected", username.textContent);
+            await socket.on("connected", (payload) => {
+                payload.forEach(user => {
+                    if(user.name !== username.textContent){
+                        const newUserList = document.createElement("li");
+                        newUserList.textContent = user.name;
+                        newUserList.classList.add("users-li");
+                    
+                        users.appendChild(newUserList); 
+                    }
+                })
+            })
+        })
+        
+        
+        socket.on("new-user-connected", (payload) => {
+            payload.forEach(user => {
+                if(user.name !== username.textContent){
+                    const newUserList = document.createElement("li");
+                    newUserList.textContent = user.name;
+                    newUserList.classList.add("users-li");
+                    
+                    users.appendChild(newUserList);
+                }
+            })
+        })
+
+
+        const resetUsersPanel = () => {
+            const child = users.lastElementChild;
+            while (child) {
+                users.removeChild(child);
+                child = users.lastElementChild();
+            }
+        }
+
+
+        socket.on("user-disconnected", (payload) => {
+            resetUsersPanel();
+            payload.forEach(user => {
+                if(user.name !== username.textContent){
+                    const newUserList = document.createElement("li");
+                    newUserList.textContent = user.name;
+                    newUserList.classList.add("users-li");
+                    
+                    users.appendChild(newUserList); 
+                }
+            })
+        })
+
 
         messageForm.addEventListener("submit", (e) => {
             e.preventDefault();
